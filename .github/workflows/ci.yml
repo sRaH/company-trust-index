@@ -60,7 +60,7 @@ jobs:
         run: make db-test
 
       - name: Run lint and static analysis
-        run: make lint
+        run: env APP_ENV=test make lint
 
       - name: Run PHPUnit
         run: make test

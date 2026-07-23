@@ -1,0 +1,16 @@
+{% set flashes = app.flashes(['success', 'error', 'warning', 'danger'])|filter(messages => messages|length > 0) %}
+{% if flashes|length > 0 %}
+    <div class="container">
+        <div class="cti-flashes" role="status" aria-live="polite" aria-atomic="true">
+            {% for type, messages in flashes %}
+                {% set alert_class = type == 'success' ? 'alert-success' : (type in ['error', 'danger'] ? 'alert-danger' : 'alert-warning') %}
+                {% for message in messages %}
+                    <div class="alert {{ alert_class }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}

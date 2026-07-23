@@ -1,0 +1,14 @@
+<article class="review-card">
+    <div class="review-card__head">
+        <div>
+            <h3 class="review-card__title">
+                <a href="{{ path('app_review_show', {id: review.id}) }}">{{ review.company.name }}</a>
+            </h3>
+            {% include 'components/_star_rating.html.twig' with {rating: review.rating} only %}
+        </div>
+        <time class="review-card__date" datetime="{{ review.createdAt|date('c') }}">
+            {{ review.createdAt|date('Y.m.d H:i') }}
+        </time>
+    </div>
+    <p class="review-card__text">{{ review.reviewText|u.truncate(200, '…') }}</p>
+</article>

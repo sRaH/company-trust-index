@@ -1,0 +1,3 @@
+form.review.no_html: "Ez a mező nem tartalmazhat HTML elemeket."
+review.too_short: "A vélemény túl rövid."
+review.too_long: "A vélemény túl hosszú."

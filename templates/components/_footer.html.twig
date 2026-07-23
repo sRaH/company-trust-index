@@ -1,0 +1,20 @@
+{# Centralized site footer. Brand mark + tagline + copyright. #}
+<footer class="cti-footer" aria-label="Lábléc">
+    <div class="container">
+        <div class="cti-footer__inner">
+            <div class="cti-footer__brand">
+                <span class="cti-brand__mark" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 19V11" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+                        <path d="M10 19V5" stroke="#e0a02f" stroke-width="2.2" stroke-linecap="round"/>
+                        <path d="M16 19V13" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+                        <path d="M3 21h18" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+                    </svg>
+                </span>
+                <span><strong>Company</strong><span>Trust</span>Index</span>
+            </div>
+            <p class="cti-footer__tag">{{ 'brand.tagline'|trans }}</p>
+            <p class="cti-footer__meta">{{ 'brand.copyright'|trans({'%year%': 'now'|date('Y')}) }}</p>
+        </div>
+    </div>
+</footer>

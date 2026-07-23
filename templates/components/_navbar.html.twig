@@ -1,0 +1,86 @@
+{# Centralized site navbar. Active state derived from the current route. #}
+{% set current_route = app.request.attributes.get('_route') %}
+{% set nav_items = [
+    {label: 'nav.reviews', route: 'app_review_index'},
+    {label: 'nav.companies', route: 'app_companies'},
+] %}
+{% set locales = [
+    {code: 'hu', label: 'locale.hu'},
+    {code: 'en', label: 'locale.en'},
+] %}
+{% set current_locale = app.request.locale %}
+
+<nav class="cti-navbar navbar navbar-expand-lg" aria-label="Fő navigáció">
+    <div class="container">
+        <a class="navbar-brand" href="{{ path('app_review_index') }}">
+            <span class="cti-brand__mark" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 19V11" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+                    <path d="M10 19V5" stroke="#e0a02f" stroke-width="2.2" stroke-linecap="round"/>
+                    <path d="M16 19V13" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+                    <path d="M3 21h18" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+                </svg>
+            </span>
+            <span class="cti-brand__name">
+                <strong>Company</strong><span>Trust</span>Index
+            </span>
+        </a>
+
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#mainNav"
+                aria-controls="mainNav" aria-expanded="false" aria-label="{{ 'nav.open_menu'|trans }}">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-lg-1">
+                {% for item in nav_items %}
+                    <li class="nav-item">
+                        <a class="nav-link {{ current_route == item.route ? 'active' : '' }}"
+                           aria-current="{{ current_route == item.route ? 'page' : 'false' }}"
+                           href="{{ path(item.route) }}">{{ item.label|trans }}</a>
+                    </li>
+                {% endfor %}
+                <li class="nav-item ms-lg-2">
+                    <a class="nav-link nav-link--cta {{ current_route == 'app_review_new' ? 'active' : '' }}"
+                       href="{{ path('app_review_new') }}">{{ 'nav.new_review'|trans }}</a>
+                </li>
+                {% if app.current_route %}
+                    <li class="nav-item ms-lg-2">
+                        <div class="dropdown cti-lang">
+                            <button class="btn cti-lang-toggle" type="button" id="langMenu"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                    aria-label="{{ 'nav.language_switch'|trans }}">
+                                <svg class="cti-lang-toggle__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/>
+                                    <path d="M3 12h18" stroke="currentColor" stroke-width="1.7"/>
+                                    <path d="M12 3c2.5 2.4 3.8 5.6 3.8 9s-1.3 6.6-3.8 9c-2.5-2.4-3.8-5.6-3.8-9S9.5 5.4 12 3z" stroke="currentColor" stroke-width="1.7"/>
+                                </svg>
+                                <span class="cti-lang-toggle__code">{{ current_locale|upper }}</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end cti-lang-menu" aria-labelledby="langMenu">
+                                {% for loc in locales %}
+                                    {% set is_active = current_locale == loc.code %}
+                                    {% set switch_params = app.current_route_parameters|merge({lang: loc.code}) %}
+                                    <li>
+                                        <a class="dropdown-item cti-lang-menu__item {{ is_active ? 'active' : '' }}"
+                                           href="{{ path(app.current_route, switch_params) }}"
+                                           hreflang="{{ loc.code }}" lang="{{ loc.code }}"
+                                           aria-current="{{ is_active ? 'true' : 'false' }}">
+                                            <span class="cti-lang-menu__code">{{ loc.code|upper }}</span>
+                                            <span class="cti-lang-menu__name">{{ loc.label|trans }}</span>
+                                            <svg class="cti-lang-menu__check {{ not is_active ? 'cti-lang-menu__check--hidden' : '' }}"
+                                                 width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                <path d="M5 12l4 4L19 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

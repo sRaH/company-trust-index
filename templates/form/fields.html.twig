@@ -1,0 +1,11 @@
+{% block company_autocomplete_widget %}
+    {% set attr = attr|merge({
+        'data-company-autocomplete-target': 'input',
+        'data-action': 'input->company-autocomplete#onInput keydown->company-autocomplete#onKeydown focus->company-autocomplete#onFocus blur->company-autocomplete#onBlur',
+        'autocomplete': 'off'
+    }) %}
+    <div class="company-autocomplete position-relative" data-controller="company-autocomplete" data-company-autocomplete-url-value="{{ autocomplete_url }}" data-company-autocomplete-min-length-value="{{ min_length }}">
+        {{ block('form_widget_simple') }}
+        <ul data-company-autocomplete-target="results" class="company-autocomplete-results list-group" role="listbox" hidden></ul>
+    </div>
+{% endblock %}

@@ -1,0 +1,77 @@
+brand:
+    name: "CompanyTrustIndex"
+    tagline: "Átlátható, közösségi céges értékelések — valós vélemények, valós döntésekhez."
+    copyright: "© %year% CompanyTrustIndex"
+
+site:
+    title: "CompanyTrustIndex — Céges értékelések"
+    description: "A CompanyTrustIndex közösségi céges értékelési platform — valós, átlátható vélemények cégekről."
+    skip_to_content: "Ugrás a tartalomra"
+
+nav:
+    reviews: "Vélemények"
+    companies: "Cégek statisztikái"
+    new_review: "Új vélemény írása"
+    open_menu: "Navigáció nyitása/zárása"
+    language_switch: "Nyelvváltás"
+
+locale:
+    hu: "Magyar"
+    en: "Angol"
+
+review:
+    index:
+        eyebrow: "Bizalmi index"
+        title: "Vélemények"
+        meta_description: "A legutóbbi céges értékelések és vélemények egy helyen — valós tapasztalatok, közösségi bizalmi index."
+    new:
+        eyebrow: "Közösségi vélemény"
+        title: "Új vélemény írása"
+        meta_description: "Oszd meg a tapasztalataidat egy cégről a CompanyTrustIndex közösségi bizalmi platformon."
+        rating_label: "Értékelés"
+        submit: "Küldés"
+        back: "Vissza"
+    show:
+        title_suffix: "Vélemény"
+        meta_description: "%company% értékelése a CompanyTrustIndex közösségi bizalmi platformon."
+        submitted: "Beküldve"
+        author: "Szerző"
+        back_to_list: "Vissza a listához"
+    form:
+        duplicate: "Ezzel az e-mail-címmel már értékelted ezt a céget."
+    flash:
+        thanks: "Köszönjük a véleményed!"
+    empty:
+        message: "Még nem érkezett vélemény. Légy te az első, aki megosztja a tapasztalatait!"
+        cta: "Írd meg az elsőt"
+
+form:
+    review:
+        company_name: "Cég neve"
+        rating: "Értékelés"
+        review_text: "Vélemény"
+        author_email: "E-mail cím"
+
+companies:
+    eyebrow: "Statisztika"
+    title: "Cégek statisztikái"
+    meta_description: "Cégenkénti véleményszám és átlagos értékelés a CompanyTrustIndex bizalmi indexén."
+    empty: "Még nincs vélemény egyetlen cégről sem."
+    search:
+        label: "Cég keresése"
+        placeholder: "Kezdd el írni a cég nevét…"
+        no_results: "Nincs a keresésnek megfelelő cég."
+    back: "Vissza a véleményekhez"
+    table:
+        company: "Cég neve"
+        review_count: "Vélemények száma"
+        average: "Átlagos értékelés"
+
+star_rating:
+    aria: "Értékelés: %rating% / 5"
+
+pagination:
+    aria: "Lapozás"
+    prev: "Előző oldal"
+    next: "Következő oldal"
+    count: "Összesen %total% vélemény"

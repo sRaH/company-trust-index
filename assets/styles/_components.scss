@@ -1,0 +1,556 @@
+// =============================================================================
+// Components — cards, badges, stars, buttons, empty state, review cards,
+// tables, forms, flashes. Includes the original star-widget + autocomplete CSS
+// folded in cleanly so the Stimulus DOM contract keeps working unchanged.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Cards
+// -----------------------------------------------------------------------------
+.card {
+    background: $cti-surface;
+    border: 1px solid $cti-line;
+    border-radius: $cti-radius;
+    box-shadow: $cti-shadow-sm;
+}
+
+.card-body { padding: $card-spacer-y $card-spacer-x; }
+
+// Lifted surface card used for primary content blocks (forms, detail, list head)
+.card--surface {
+    box-shadow: $cti-shadow;
+}
+
+// Detail card with a quiet top accent line (used on review show)
+.card--accent {
+    border-top: 3px solid $cti-primary;
+    border-top-left-radius: $cti-radius;
+    border-top-right-radius: $cti-radius;
+}
+
+// -----------------------------------------------------------------------------
+// Buttons — add a soft, slightly warmer primary + an outline variant that
+// reads on warm paper. Bootstrap classes are extended, not replaced.
+// -----------------------------------------------------------------------------
+.btn-primary {
+    border-color: $cti-primary;
+    box-shadow: 0 1px 2px rgba(14, 124, 123, 0.25);
+}
+.btn-primary:hover,
+.btn-primary:focus {
+    background: $cti-primary-700;
+    border-color: $cti-primary-700;
+}
+.btn-outline-secondary {
+    --bs-btn-color: #{$cti-ink-soft};
+    --bs-btn-border-color: #{$cti-line};
+    --bs-btn-hover-bg: #{$cti-primary-050};
+    --bs-btn-hover-border-color: #{$cti-primary};
+    --bs-btn-hover-color: #{$cti-primary-700};
+    --bs-btn-active-bg: #{$cti-primary-050};
+    --bs-btn-active-border-color: #{$cti-primary};
+}
+.btn-ghost-ink {
+    --bs-btn-color: #{$cti-ink-soft};
+    --bs-btn-bg: transparent;
+    --bs-btn-border-color: transparent;
+    --bs-btn-hover-bg: rgba(17, 32, 46, 0.05);
+    --bs-btn-hover-color: #{$cti-ink};
+    --bs-btn-hover-border-color: transparent;
+    --bs-btn-active-bg: rgba(17, 32, 46, 0.08);
+}
+
+// -----------------------------------------------------------------------------
+// Star rating — READ-ONLY display with partial / half-star support (used by
+// _star_rating.html.twig). Two layers of 5 glyphs inside a __track wrapper:
+// an empty base + a gold fill clipped to `width = rating/5 * 100%`. Distinct
+// class names so it never collides with the interactive widget below.
+// -----------------------------------------------------------------------------
+.star-rating-display {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    line-height: 1;
+    font-size: 1.05rem;
+}
+
+.star-rating-display__track {
+    position: relative;
+    display: inline-block;
+    line-height: 1;
+}
+
+.star-rating-display__layer {
+    display: inline-block;
+    line-height: 1;
+    letter-spacing: 0;
+    white-space: nowrap;
+}
+
+.star-rating-display__layer--empty {
+    color: $cti-line;
+}
+
+.star-rating-display__layer--fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    color: $cti-gold;
+    text-shadow: 0 1px 1px rgba(17, 32, 46, 0.08);
+}
+
+.star-rating-display__value {
+    font-size: 0.85em;
+    font-weight: 600;
+    color: $cti-muted;
+}
+
+// Larger variant for detail/hero ratings
+.star-rating-display--lg { font-size: 1.45rem; }
+
+// Badge that wraps a rating — used on review show header
+.rating-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: $cti-gold-050;
+    border: 1px solid rgba($cti-gold, 0.45);
+    color: $cti-gold-600;
+    font-weight: 600;
+    font-size: 1.05rem;
+    line-height: 1;
+}
+
+// -----------------------------------------------------------------------------
+// Interactive star rating widget  (kept from original app.scss verbatim in
+// behaviour — classes/hooks required by star_rating_controller.js).
+// -----------------------------------------------------------------------------
+.star-rating-widget {
+    display: inline-flex;
+    gap: 0.25rem;
+    font-size: 1.75rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.star-rating-widget .star-active {
+    color: $cti-gold;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.star-rating-widget .star-inactive {
+    color: $cti-line;
+}
+
+.star-rating-widget .star-rating-star {
+    transition: transform 0.1s ease, color 0.15s ease;
+    line-height: 1;
+}
+
+.star-rating-widget .star-rating-star:hover {
+    transform: scale(1.2);
+}
+
+// -----------------------------------------------------------------------------
+// Company autocomplete dropdown (kept behaviour; restyled to the new tokens)
+// -----------------------------------------------------------------------------
+.company-autocomplete-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1050;
+    width: 100%;
+    max-height: 16rem;
+    overflow-y: auto;
+    font-size: 0.95rem;
+    border-radius: $cti-radius-sm;
+    box-shadow: $cti-shadow-lg;
+    background: $cti-surface;
+    border: 1px solid $cti-line;
+}
+
+.company-autocomplete-results .list-group-item {
+    cursor: pointer;
+    border-width: 0 0 1px;
+    padding: 0.55rem 0.85rem;
+    background: transparent;
+}
+
+.company-autocomplete-results .list-group-item:last-child {
+    border-bottom: 0;
+}
+
+.company-autocomplete-results .is-active,
+.company-autocomplete-results .list-group-item:hover {
+    background-color: $cti-primary-050;
+    color: $cti-primary-700;
+}
+
+// -----------------------------------------------------------------------------
+// Review list / review card (used by _review_card.html.twig)
+// -----------------------------------------------------------------------------
+.review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.review-card {
+    background: $cti-surface;
+    border: 1px solid $cti-line;
+    border-radius: $cti-radius;
+    box-shadow: $cti-shadow-sm;
+    padding: 1.25rem 1.4rem;
+    transition: box-shadow 0.18s ease, transform 0.18s ease, border-color 0.18s ease;
+}
+
+.review-card:hover {
+    box-shadow: $cti-shadow;
+    border-color: rgba($cti-primary, 0.4);
+    transform: translateY(-1px);
+}
+
+.review-card__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.review-card__title {
+    margin: 0 0 0.25rem;
+    font-family: $cti-font-display;
+    font-size: 1.22rem;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.review-card__title a {
+    color: $cti-ink;
+    text-decoration: none;
+}
+.review-card__title a:hover { color: $cti-primary-700; }
+
+.review-card__date {
+    flex: none;
+    font-size: 0.82rem;
+    color: $cti-muted;
+    white-space: nowrap;
+}
+
+.review-card__rating { margin-bottom: 0.6rem; }
+
+.review-card__text {
+    margin: 0;
+    color: $cti-ink-soft;
+    line-height: 1.6;
+}
+
+// -----------------------------------------------------------------------------
+// Empty state (used by _empty_state.html.twig)
+// -----------------------------------------------------------------------------
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.85rem;
+    padding: 3rem 1.5rem;
+    background: $cti-surface;
+    border: 1px dashed $cti-line;
+    border-radius: $cti-radius-lg;
+}
+
+.empty-state__icon {
+    display: grid;
+    place-items: center;
+    width: 3.75rem;
+    height: 3.75rem;
+    border-radius: 50%;
+    background: $cti-primary-050;
+    color: $cti-primary;
+}
+
+.empty-state__message {
+    margin: 0;
+    max-width: 32rem;
+    color: $cti-ink-soft;
+    font-size: 1.05rem;
+}
+
+.empty-state__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: center;
+}
+
+// -----------------------------------------------------------------------------
+// Stat table (companies page)
+// -----------------------------------------------------------------------------
+.cti-table {
+    --bs-table-bg: #{$cti-surface};
+    --bs-table-striped-bg: #{$cti-gold-050};
+    border: 1px solid $cti-line;
+    border-radius: $cti-radius;
+    overflow: hidden;
+    box-shadow: $cti-shadow-sm;
+    margin-bottom: 0;
+}
+
+.cti-table thead th {
+    background: $cti-ink;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border: none;
+    padding: 0.9rem 1rem;
+}
+
+.cti-table tbody td {
+    padding: 0.9rem 1rem;
+    vertical-align: middle;
+    color: $cti-ink-soft;
+}
+
+.cti-table tbody tr {
+    border-color: $cti-line;
+}
+
+.cti-rating-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+// -----------------------------------------------------------------------------
+// Forms
+// -----------------------------------------------------------------------------
+.form-label {
+    font-weight: 600;
+    color: $cti-ink;
+    margin-bottom: 0.35rem;
+}
+
+.form-control,
+.form-select {
+    border-color: $cti-line;
+}
+.form-control:focus,
+.form-select:focus {
+    border-color: $cti-primary;
+    box-shadow: $cti-ring-primary;
+}
+
+// -----------------------------------------------------------------------------
+// Breadcrumb
+// -----------------------------------------------------------------------------
+.breadcrumb {
+    font-size: 0.9rem;
+    --bs-breadcrumb-divider: "/";
+}
+.breadcrumb a { color: $cti-primary-700; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb-item.active { color: $cti-muted; }
+
+// -----------------------------------------------------------------------------
+// Flash messages — centralized region, Bootstrap alerts restyled to tokens,
+// with a manual dismiss button (Bootstrap JS) + a soft entrance animation.
+// (Auto-dismiss would need JS; "nice-to-have" only — kept JS-free per scope.)
+// -----------------------------------------------------------------------------
+.cti-flashes {
+    margin-top: 1rem;
+}
+
+.cti-flashes .alert {
+    border-radius: $cti-radius;
+    border: 1px solid transparent;
+    box-shadow: $cti-shadow-sm;
+    margin-bottom: 0.6rem;
+    animation: cti-flash-in 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.cti-flashes .alert-success {
+    background: $cti-success-bg;
+    border-color: rgba($cti-success, 0.35);
+    color: #14402c;
+}
+.cti-flashes .alert-error,
+.cti-flashes .alert-danger {
+    background: $cti-danger-bg;
+    border-color: rgba($cti-danger, 0.35);
+    color: #5a1310;
+}
+.cti-flashes .alert-warning {
+    background: $cti-warning-bg;
+    border-color: rgba($cti-warning, 0.35);
+    color: #4a2c00;
+}
+
+@keyframes cti-flash-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cti-flashes .alert { animation: none; }
+    .review-card { transition: none; }
+}
+
+// -----------------------------------------------------------------------------
+// Language chooser (globe-icon dropdown, lives in the dark navbar)
+// -----------------------------------------------------------------------------
+.cti-lang-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.65rem;
+    border: 1px solid rgba(#fff, 0.16);
+    border-radius: $cti-radius-sm;
+    background: rgba(#fff, 0.06);
+    color: rgba(#fff, 0.85);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    line-height: 1;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.cti-lang-toggle:hover,
+.cti-lang-toggle[aria-expanded="true"] {
+    background: rgba(#fff, 0.13);
+    border-color: rgba(#fff, 0.28);
+    color: #fff;
+}
+
+.cti-lang-toggle:focus-visible {
+    outline: none;
+    box-shadow: $cti-ring-primary;
+    border-color: rgba(#fff, 0.4);
+}
+
+.cti-lang-toggle__icon { color: inherit; }
+
+.cti-lang-menu {
+    border: 1px solid $cti-line;
+    border-radius: $cti-radius-sm;
+    box-shadow: $cti-shadow-lg;
+    background: $cti-surface;
+    min-width: 13rem;
+    padding: 0.35rem;
+}
+
+.cti-lang-menu__item {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: $cti-radius-sm;
+    color: $cti-ink-soft;
+    text-decoration: none;
+    transition: background 0.13s ease, color 0.13s ease;
+}
+
+.cti-lang-menu__item:hover {
+    background: $cti-primary-050;
+    color: $cti-primary-700;
+}
+
+.cti-lang-menu__item.active {
+    background: $cti-primary-050;
+    color: $cti-primary-700;
+    font-weight: 600;
+}
+
+.cti-lang-menu__code {
+    flex: none;
+    min-width: 1.9rem;
+    text-align: center;
+    padding: 0.18rem 0.3rem;
+    border-radius: $cti-radius-sm;
+    background: $cti-gold-050;
+    color: $cti-gold-600;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.cti-lang-menu__name {
+    flex: 1 1 auto;
+    font-size: 0.92rem;
+}
+
+.cti-lang-menu__check { flex: none; color: $cti-primary; }
+
+.cti-lang-menu__check--hidden { visibility: hidden; }
+
+// -----------------------------------------------------------------------------
+// Pagination (reusable _pagination.html.twig)
+// -----------------------------------------------------------------------------
+.cti-pagination {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.75rem;
+}
+
+.cti-pagination .pagination {
+    margin: 0;
+    gap: 0.25rem;
+}
+
+.cti-pagination .page-link {
+    min-width: 2.35rem;
+    text-align: center;
+    border-color: $cti-line;
+    color: $cti-ink-soft;
+    border-radius: $cti-radius-sm !important;
+    transition: background 0.13s ease, color 0.13s ease, border-color 0.13s ease;
+}
+
+.cti-pagination .page-link:hover {
+    background: $cti-primary-050;
+    border-color: rgba($cti-primary, 0.4);
+    color: $cti-primary-700;
+}
+
+.cti-pagination .page-item.active .page-link {
+    background: $cti-primary;
+    border-color: $cti-primary;
+    color: #fff;
+}
+
+.cti-pagination .page-item.disabled .page-link {
+    color: $cti-muted;
+    opacity: 0.6;
+}
+
+.cti-pagination .page-link:focus-visible {
+    outline: none;
+    box-shadow: $cti-ring-primary;
+}
+
+.cti-pagination__count {
+    margin: 0;
+    font-size: 0.85rem;
+    color: $cti-muted;
+}
+
+// -----------------------------------------------------------------------------
+// Company search box (companies stats page)
+// -----------------------------------------------------------------------------
+.cti-company-search .card-body {
+    padding: 1rem 1.25rem;
+}
+
+.cti-company-search .form-label {
+    margin-bottom: 0.25rem;
+}

@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'review.new.title'|trans }} — {{ 'brand.name'|trans }}{% endblock %}
+{% block meta_description %}{{ 'review.new.meta_description'|trans }}{% endblock %}
+
+{% block content %}
+<header class="section-head">
+    <div>
+        <span class="eyebrow">{{ 'review.new.eyebrow'|trans }}</span>
+        <h1>{{ 'review.new.title'|trans }}</h1>
+    </div>
+</header>
+
+<div class="card card--surface">
+    <div class="card-body">
+        {{ form_start(form, {attr: {'data-controller': 'review-form'}}) }}
+            {{ form_row(form.companyName) }}
+
+            <div class="mb-3">
+                <label class="form-label">{{ 'review.new.rating_label'|trans }}</label>
+                <div
+                    data-controller="star-rating"
+                    data-star-rating-rating-value="{{ form.rating.vars.value ?: 0 }}"
+                    class="mb-1"
+                >
+                    <div class="star-rating-widget" data-action="mouseleave->star-rating#leave">
+                        {% for i in 1..5 %}
+                            <span
+                                data-star-rating-target="star"
+                                data-star-value="{{ i }}"
+                                data-action="click->star-rating#select mouseenter->star-rating#hover"
+                                class="star-rating-star {{ form.rating.vars.value and i <= form.rating.vars.value ? 'star-active' : 'star-inactive' }}"
+                            >★</span>
+                        {% endfor %}
+                    </div>
+                    {{ form_widget(form.rating, {attr: {'data-star-rating-target': 'input'}}) }}
+                </div>
+                {{ form_errors(form.rating) }}
+            </div>
+
+            <div data-review-form-target="textareaContainer">
+                {{ form_row(form.reviewText, {
+                    attr: {
+                        'data-review-form-target': 'textarea',
+                        'data-action': 'input->review-form#counter',
+                    }
+                }) }}
+                <div class="text-end text-muted-warm small" data-review-form-target="counter">
+                    {{ form.reviewText.vars.value|length }}
+                </div>
+            </div>
+
+            {{ form_row(form.authorEmail) }}
+
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-primary">{{ 'review.new.submit'|trans }}</button>
+                <a href="{{ path('app_review_index') }}" class="btn btn-outline-secondary">{{ 'review.new.back'|trans }}</a>
+            </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

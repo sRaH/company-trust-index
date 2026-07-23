@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ review.company.name }} — {{ 'review.show.title_suffix'|trans }}{% endblock %}
+{% block meta_description %}{{ 'review.show.meta_description'|trans({'%company%': review.company.name}) }}{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('app_review_index') }}">{{ 'nav.reviews'|trans }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ review.company.name }}</li>
+    </ol>
+</nav>
+
+<article class="card card--surface card--accent">
+    <div class="card-body">
+        <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-3">
+            <h1 class="card-title mb-0">{{ review.company.name }}</h1>
+            <span class="rating-badge">
+                {% include 'components/_star_rating.html.twig' with {rating: review.rating, large: true} only %}
+            </span>
+        </div>
+
+        <hr class="divider-soft">
+
+        <p class="card-text fs-5 mb-4">{{ review.reviewText }}</p>
+
+        <div class="text-muted-warm d-flex flex-wrap gap-3 align-items-center">
+            <small>
+                {% if review.authorEmail %}
+                    <span class="chip" aria-label="{{ 'review.show.author'|trans }}">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="1.8"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                        {{ review.authorEmail }}
+                    </span>
+                {% endif %}
+            </small>
+            <small>{{ 'review.show.submitted'|trans }}: {{ review.createdAt|date('Y.m.d H:i') }}</small>
+        </div>
+    </div>
+</article>
+
+<div class="mt-3">
+    <a href="{{ path('app_review_index') }}" class="btn btn-outline-secondary">{{ 'review.show.back_to_list'|trans }}</a>
+</div>
+{% endblock %}

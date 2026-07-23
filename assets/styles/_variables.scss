@@ -1,0 +1,124 @@
+// =============================================================================
+// CompanyTrustIndex — Design tokens & Bootstrap overrides
+// Imported BEFORE bootstrap so Bootstrap's `!default` values pick these up.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Brand palette  (trust + warmth: teal confidence, warm paper, amber stars)
+// -----------------------------------------------------------------------------
+$cti-ink:         #11202e; // deep ink — headings, navbar, primary text
+$cti-ink-soft:    #1f2f3b; // slightly lifted ink for body text
+$cti-primary:     #0e7c7b; // teal — trust / brand
+$cti-primary-700: #0a5f5e; // teal hover / pressed
+$cti-primary-050: #e8f2f1; // teal tinted background
+$cti-gold:        #e0a02f; // amber — stars / rating warmth
+$cti-gold-600:    #c2841c; // amber hover
+$cti-gold-050:    #fbf2dd; // amber tinted background
+$cti-paper:       #f6f4ee; // warm paper background (replaces stock #eee)
+$cti-surface:     #ffffff; // card surface
+$cti-line:        #e4e0d6; // warm hairline border
+$cti-muted:       #6a757c; // muted secondary text
+
+$cti-success:     #2f7d52;
+$cti-success-bg:  #e4f3ea;
+$cti-danger:      #b3261e;
+$cti-danger-bg:   #fbe7e6;
+$cti-warning:     #b26a00;
+$cti-warning-bg:  #fbecd2;
+
+// -----------------------------------------------------------------------------
+// Typography
+// -----------------------------------------------------------------------------
+$cti-font-body:    "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+$cti-font-display: "Fraunces", Georgia, "Times New Roman", serif;
+
+// -----------------------------------------------------------------------------
+// Radii, shadows, spacing rhythm
+// -----------------------------------------------------------------------------
+$cti-radius:       0.75rem;  // 12px — soft, modern
+$cti-radius-sm:    0.5rem;
+$cti-radius-lg:    1.125rem;
+$cti-shadow-sm:    0 1px 2px rgba(17, 32, 46, 0.06);
+$cti-shadow:       0 6px 18px rgba(17, 32, 46, 0.07), 0 1px 3px rgba(17, 32, 46, 0.05);
+$cti-shadow-lg:    0 18px 40px rgba(17, 32, 46, 0.12);
+$cti-ring-primary: 0 0 0 3px rgba($cti-primary, 0.28);
+$cti-ring-gold:    0 0 0 3px rgba($cti-gold, 0.30);
+
+// -----------------------------------------------------------------------------
+// Bootstrap overrides  (exposed before `@import "bootstrap/scss/bootstrap"`)
+// -----------------------------------------------------------------------------
+$primary:    $cti-primary;
+$secondary:  $cti-muted;
+$dark:       $cti-ink;
+$success:    $cti-success;
+$danger:     $cti-danger;
+$warning:    $cti-warning;
+
+$body-bg:           $cti-paper;
+$body-color:        $cti-ink-soft;
+$headings-color:    $cti-ink;
+$link-color:        $cti-primary-700;
+$link-hover-color:  $cti-primary;
+$border-color:      $cti-line;
+
+$font-family-sans-serif: $cti-font-body;
+$font-family-base:       $cti-font-body;
+$headings-font-family:   $cti-font-display;
+$headings-font-weight:   600;
+
+$border-radius:    $cti-radius;
+$border-radius-sm: $cti-radius-sm;
+$border-radius-lg: $cti-radius-lg;
+
+// Buttons get a touch more polish
+$btn-font-weight: 600;
+$btn-focus-width: 0.2rem;
+$btn-focus-box-shadow: $cti-ring-primary;
+
+$input-btn-focus-color-opacity: 0.28;
+$input-btn-focus-color: rgba($cti-primary, 1);
+$input-focus-border-color: $cti-primary;
+
+// Navbar — opaque ink navbar rather than default white
+$navbar-dark-color:                rgba(#fff, 0.82);
+$navbar-dark-hover-color:          #fff;
+$navbar-dark-active-color:         #fff;
+$navbar-dark-disabled-color:       rgba(#fff, 0.45);
+
+// Cards
+$card-border-color: $cti-line;
+$card-border-width: 1px;
+$card-border-radius: $cti-radius;
+$card-cap-bg:       transparent;
+$card-spacer-y:     1.4rem;
+$card-spacer-x:     1.5rem;
+
+// Tables
+$table-border-color: $cti-line;
+
+// -----------------------------------------------------------------------------
+// Expose tokens as CSS custom properties for reuse in the component layer
+// -----------------------------------------------------------------------------
+:root {
+    --cti-ink: #{$cti-ink};
+    --cti-ink-soft: #{$cti-ink-soft};
+    --cti-primary: #{$cti-primary};
+    --cti-primary-700: #{$cti-primary-700};
+    --cti-primary-050: #{$cti-primary-050};
+    --cti-gold: #{$cti-gold};
+    --cti-gold-600: #{$cti-gold-600};
+    --cti-gold-050: #{$cti-gold-050};
+    --cti-paper: #{$cti-paper};
+    --cti-surface: #{$cti-surface};
+    --cti-line: #{$cti-line};
+    --cti-muted: #{$cti-muted};
+    --cti-radius: #{$cti-radius};
+    --cti-radius-sm: #{$cti-radius-sm};
+    --cti-radius-lg: #{$cti-radius-lg};
+    --cti-shadow-sm: #{$cti-shadow-sm};
+    --cti-shadow: #{$cti-shadow};
+    --cti-shadow-lg: #{$cti-shadow-lg};
+    --cti-ring-primary: #{$cti-ring-primary};
+    --cti-ring-gold: #{$cti-ring-gold};
+    --cti-font-display: #{$cti-font-display};
+}

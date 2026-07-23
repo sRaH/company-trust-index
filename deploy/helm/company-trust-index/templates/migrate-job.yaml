@@ -1,0 +1,52 @@
+{{- if .Values.migrate.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+    name: {{ include "company-trust-index.fullname" . }}-migration
+    labels:
+        {{- include "company-trust-index.labels" . | nindent 8 }}
+    annotations:
+        "helm.sh/hook": post-install,post-upgrade
+        "helm.sh/hook-weight": "10"
+        "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+    backoffLimit: 5
+    activeDeadlineSeconds: 900
+    template:
+        metadata:
+            labels:
+                {{- include "company-trust-index.selectorLabels" . | nindent 16 }}
+        spec:
+            restartPolicy: OnFailure
+            {{- with .Values.imagePullSecrets }}
+            imagePullSecrets:
+                {{- toYaml . | nindent 16 }}
+            {{- end }}
+            containers:
+                - name: migration
+                  image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+                  imagePullPolicy: {{ .Values.image.pullPolicy }}
+                  command:
+                      - /bin/sh
+                      - -ec
+                      - |
+                          until php bin/console doctrine:query:sql "SELECT 1" --env=prod >/dev/null 2>&1; do
+                              sleep 5
+                          done
+                          php bin/console doctrine:migrations:migrate --no-interaction --env=prod
+                  env:
+                      {{- range $key, $value := .Values.env }}
+                      - name: {{ $key }}
+                        value: {{ $value | quote }}
+                      {{- end }}
+                      - name: APP_SECRET
+                        valueFrom:
+                            secretKeyRef:
+                                name: {{ include "company-trust-index.secretName" . }}
+                                key: APP_SECRET
+                      - name: DATABASE_URL
+                        valueFrom:
+                            secretKeyRef:
+                                name: {{ include "company-trust-index.secretName" . }}
+                                key: DATABASE_URL
+{{- end }}

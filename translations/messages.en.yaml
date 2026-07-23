@@ -1,0 +1,77 @@
+brand:
+    name: "CompanyTrustIndex"
+    tagline: "Transparent, community company reviews — real opinions for real decisions."
+    copyright: "© %year% CompanyTrustIndex"
+
+site:
+    title: "CompanyTrustIndex — Company reviews"
+    description: "The CompanyTrustIndex community company-review platform — real, transparent opinions about companies."
+    skip_to_content: "Skip to content"
+
+nav:
+    reviews: "Reviews"
+    companies: "Company statistics"
+    new_review: "Write a review"
+    open_menu: "Open / close navigation"
+    language_switch: "Switch language"
+
+locale:
+    hu: "Hungarian"
+    en: "English"
+
+review:
+    index:
+        eyebrow: "Trust index"
+        title: "Reviews"
+        meta_description: "The latest company ratings and reviews in one place — real experiences, a community trust index."
+    new:
+        eyebrow: "Community review"
+        title: "Write a review"
+        meta_description: "Share your experience with a company on the CompanyTrustIndex community trust platform."
+        rating_label: "Rating"
+        submit: "Submit"
+        back: "Back"
+    show:
+        title_suffix: "Review"
+        meta_description: "Review of %company% on the CompanyTrustIndex community trust platform."
+        submitted: "Submitted"
+        author: "Author"
+        back_to_list: "Back to the list"
+    form:
+        duplicate: "You have already rated this company with this email address."
+    flash:
+        thanks: "Thank you for your review!"
+    empty:
+        message: "No reviews yet. Be the first to share your experience!"
+        cta: "Write the first one"
+
+form:
+    review:
+        company_name: "Company name"
+        rating: "Rating"
+        review_text: "Review"
+        author_email: "Email address"
+
+companies:
+    eyebrow: "Statistics"
+    title: "Company statistics"
+    meta_description: "Per-company review counts and average ratings on the CompanyTrustIndex trust index."
+    empty: "No reviews for any company yet."
+    search:
+        label: "Search companies"
+        placeholder: "Start typing a company name…"
+        no_results: "No company matches your search."
+    back: "Back to reviews"
+    table:
+        company: "Company name"
+        review_count: "Number of reviews"
+        average: "Average rating"
+
+star_rating:
+    aria: "Rating: %rating% / 5"
+
+pagination:
+    aria: "Pagination"
+    prev: "Previous page"
+    next: "Next page"
+    count: "%total% reviews in total"

@@ -1,0 +1,36 @@
+{{- if .Values.mariadb.enabled }}
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: MariaDB
+metadata:
+    name: {{ include "company-trust-index.mariadbName" . }}
+    labels:
+        {{- include "company-trust-index.labels" . | nindent 8 }}
+spec:
+    image: {{ .Values.mariadb.image | quote }}
+    port: 3306
+    replicas: 1
+    replicasAllowEvenNumber: false
+    database: {{ .Values.mariadb.database | quote }}
+    username: {{ .Values.mariadb.username | quote }}
+    passwordSecretKeyRef:
+        generate: false
+        key: {{ .Values.secret.mariadbPasswordKey | quote }}
+        name: {{ include "company-trust-index.secretName" . }}
+    rootPasswordSecretKeyRef:
+        generate: true
+        key: password
+        name: {{ include "company-trust-index.mariadbPasswordSecretName" . }}
+    service:
+        type: ClusterIP
+    storage:
+        ephemeral: false
+        size: {{ .Values.mariadb.storage.size }}
+        volumeClaimTemplate:
+            accessModes:
+                - ReadWriteOnce
+            resources:
+                requests:
+                    storage: {{ .Values.mariadb.storage.size }}
+    resources:
+        {{- toYaml .Values.mariadb.resources | nindent 8 }}
+{{- end }}

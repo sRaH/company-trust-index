@@ -1,5 +1,14 @@
-import { startStimulusApp } from '@symfony/stimulus-bundle';
+import { startStimulusApp, registerControllers } from "vite-plugin-symfony/stimulus/helpers";
 
 const app = startStimulusApp();
-// register any custom, 3rd party controllers here
-// app.register('some_controller_name', SomeImportedController);
+
+// startStimulusApp() loads controllers.json (Turbo, UX) via the plugin's
+// virtual:symfony/controllers module. Use a LAZY glob here (no `eager: true`):
+// this helper version registers controllers from function-valued modules only;
+// eager namespaces are silently skipped, so nothing would connect.
+registerControllers(
+    app,
+    import.meta.glob("./controllers/*_controller.js")
+);
+
+export { app };

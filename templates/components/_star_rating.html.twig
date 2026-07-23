@@ -1,0 +1,15 @@
+{% set rating = rating|default(0) %}
+{% set fill = max(0, min(5, rating)) %}
+{% set fill_pct = (fill / 5 * 100)|round(2) %}
+{% set large = large|default(false) %}
+
+<span class="star-rating-display {{ large ? 'star-rating-display--lg' : '' }}"
+      role="img" aria-label="{{ 'star_rating.aria'|trans({'%rating%': fill|round(1)}) }}">
+    <span class="star-rating-display__track" aria-hidden="true">
+        <span class="star-rating-display__layer star-rating-display__layer--empty">★★★★★</span>
+        <span class="star-rating-display__layer star-rating-display__layer--fill" style="width: {{ fill_pct }}%;">★★★★★</span>
+    </span>
+    {% if value is defined and value is not empty %}
+        <span class="star-rating-display__value">({{ value|number_format(1, ',') }})</span>
+    {% endif %}
+</span>

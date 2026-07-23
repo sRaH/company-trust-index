@@ -1,0 +1,15 @@
+// =============================================================================
+// CompanyTrustIndex — application stylesheet entry
+// Layer order: tokens (_variables) -> Bootstrap -> project layers
+// =============================================================================
+
+// 1. Design tokens + Bootstrap variable overrides (must precede Bootstrap).
+@import "variables";
+
+// 2. Bootstrap (its own !default values now resolve to our tokens).
+@import "bootstrap/scss/bootstrap";
+
+// 3. Project layers.
+@import "layout";
+@import "components";
+@import "utilities";

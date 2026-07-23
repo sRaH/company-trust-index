@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'companies.title'|trans }} — {{ 'brand.name'|trans }}{% endblock %}
+{% block meta_description %}{{ 'companies.meta_description'|trans }}{% endblock %}
+
+{% block content %}
+<header class="section-head">
+    <div>
+        <span class="eyebrow">{{ 'companies.eyebrow'|trans }}</span>
+        <h1>{{ 'companies.title'|trans }}</h1>
+    </div>
+</header>
+
+{% if statistics is empty %}
+    {% include 'components/_empty_state.html.twig' with {
+        message: 'companies.empty'|trans
+    } only %}
+{% else %}
+    <div data-controller="company-stats-filter"
+         data-action="input->company-stats-filter#filter company-autocomplete:choose->company-stats-filter#filter">
+        <div class="cti-company-search card card--surface mb-3">
+            <div class="card-body">
+                <div class="company-autocomplete position-relative"
+                     data-controller="company-autocomplete"
+                     data-company-autocomplete-url-value="{{ path('app_companies_search') }}"
+                     data-company-autocomplete-min-length-value="1">
+                    <label class="form-label" for="company-search">{{ 'companies.search.label'|trans }}</label>
+                    <input type="search" id="company-search" class="form-control"
+                           data-company-autocomplete-target="input"
+                           data-action="input->company-autocomplete#onInput keydown->company-autocomplete#onKeydown focus->company-autocomplete#onFocus blur->company-autocomplete#onBlur"
+                           placeholder="{{ 'companies.search.placeholder'|trans }}"
+                           autocomplete="off">
+                    <ul data-company-autocomplete-target="results"
+                        class="company-autocomplete-results list-group" role="listbox" hidden></ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover cti-table">
+                <thead>
+                    <tr>
+                        <th scope="col">{{ 'companies.table.company'|trans }}</th>
+                        <th scope="col">{{ 'companies.table.review_count'|trans }}</th>
+                        <th scope="col">{{ 'companies.table.average'|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stat in statistics %}
+                        <tr data-company-stats-filter-target="row" data-company-name="{{ stat.name }}">
+                            <td>{{ stat.name }}</td>
+                            <td>{{ stat.reviewCount }}</td>
+                            <td>
+                                <span class="cti-rating-cell">
+                                    {% include 'components/_star_rating.html.twig' with {
+                                        rating: stat.averageRating,
+                                        value: stat.averageRating
+                                    } only %}
+                                </span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr data-company-stats-filter-target="empty" hidden>
+                        <td colspan="3" class="text-center text-muted py-4">{{ 'companies.search.no_results'|trans }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endif %}
+
+<div class="mt-4">
+    <a href="{{ path('app_review_index') }}" class="btn btn-outline-secondary">{{ 'companies.back'|trans }}</a>
+</div>
+{% endblock %}

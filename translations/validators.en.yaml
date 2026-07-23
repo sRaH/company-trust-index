@@ -1,0 +1,3 @@
+form.review.no_html: "This field must not contain HTML elements."
+review.too_short: "The review is too short."
+review.too_long: "The review is too long."

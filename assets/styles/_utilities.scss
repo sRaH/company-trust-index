@@ -1,0 +1,63 @@
+// =============================================================================
+// Utilities — small helpers layered on top of Bootstrap utilities.
+// =============================================================================
+
+// Text helpers
+.text-ink        { color: $cti-ink !important; }
+.text-ink-soft   { color: $cti-ink-soft !important; }
+.text-muted-warm { color: $cti-muted !important; }
+.text-gold       { color: $cti-gold !important; }
+
+// Link affordance for plain text links inside cards/body
+.link-quiet {
+    color: $cti-primary-700;
+    text-decoration: none;
+    font-weight: 600;
+}
+.link-quiet:hover { color: $cti-primary; text-decoration: underline; }
+
+// Decorative divider used between meta lines
+.divider-soft {
+    height: 1px;
+    border: 0;
+    background: $cti-line;
+    margin: 1.25rem 0;
+}
+
+// Subtle "tag" chip for inline metadata
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.15rem 0.55rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: $cti-primary-700;
+    background: $cti-primary-050;
+    border: 1px solid rgba($cti-primary, 0.2);
+    border-radius: 999px;
+}
+
+// Skip-to-content for keyboard users
+.skip-link {
+    position: absolute;
+    left: 0.5rem;
+    top: -3rem;
+    z-index: 1100;
+    background: #fff;
+    color: $cti-ink;
+    padding: 0.5rem 0.85rem;
+    border-radius: $cti-radius-sm;
+    box-shadow: $cti-shadow;
+    transition: top 0.15s ease;
+}
+.skip-link:focus { top: 0.5rem; }
+
+// Stronger focus ring on interactive elements for accessibility
+a:focus-visible,
+button:focus-visible,
+.form-control:focus-visible,
+.form-select:focus-visible {
+    outline: 2px solid rgba($cti-primary, 0.6);
+    outline-offset: 2px;
+}

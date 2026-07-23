@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: {{ include "company-trust-index.fullname" . }}
+    labels:
+        {{- include "company-trust-index.labels" . | nindent 8 }}
+spec:
+    replicas: {{ .Values.replicaCount }}
+    selector:
+        matchLabels:
+            {{- include "company-trust-index.selectorLabels" . | nindent 12 }}
+    template:
+        metadata:
+            labels:
+                {{- include "company-trust-index.selectorLabels" . | nindent 16 }}
+        spec:
+            securityContext:
+                {{- toYaml .Values.podSecurityContext | nindent 16 }}
+            {{- with .Values.imagePullSecrets }}
+            imagePullSecrets:
+                {{- toYaml . | nindent 16 }}
+            {{- end }}
+            containers:
+                - name: {{ .Chart.Name }}
+                  image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+                  imagePullPolicy: {{ .Values.image.pullPolicy }}
+                  securityContext:
+                      {{- toYaml .Values.securityContext | nindent 22 }}
+                  ports:
+                      - name: http
+                        containerPort: 80
+                        protocol: TCP
+                  env:
+                      {{- range $key, $value := .Values.env }}
+                      - name: {{ $key }}
+                        value: {{ $value | quote }}
+                      {{- end }}
+                      - name: APP_SECRET
+                        valueFrom:
+                            secretKeyRef:
+                                name: {{ include "company-trust-index.secretName" . }}
+                                key: APP_SECRET
+                      - name: DATABASE_URL
+                        valueFrom:
+                            secretKeyRef:
+                                name: {{ include "company-trust-index.secretName" . }}
+                                key: DATABASE_URL
+                  resources:
+                      {{- toYaml .Values.resources | nindent 22 }}
+                  livenessProbe:
+                      {{- toYaml .Values.livenessProbe | nindent 22 }}
+                  readinessProbe:
+                      {{- toYaml .Values.readinessProbe | nindent 22 }}

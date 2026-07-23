@@ -1,0 +1,15 @@
+{% set message = message|default('') %}
+<div class="empty-state">
+    <span class="empty-state__icon" aria-hidden="true">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9 6.8 19.2l1-5.8L3.5 9.2l5.9-.9L12 3z"
+                  stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        </svg>
+    </span>
+    <p class="empty-state__message">{{ message }}</p>
+    {% if cta_text is defined and cta_href is defined %}
+        <div class="empty-state__actions">
+            <a class="btn btn-primary" href="{{ cta_href }}">{{ cta_text }}</a>
+        </div>
+    {% endif %}
+</div>

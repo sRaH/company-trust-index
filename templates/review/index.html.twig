@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'review.index.title'|trans }} — {{ 'brand.name'|trans }}{% endblock %}
+{% block meta_description %}{{ 'review.index.meta_description'|trans }}{% endblock %}
+
+{% block content %}
+<header class="section-head">
+    <div>
+        <span class="eyebrow">{{ 'review.index.eyebrow'|trans }}</span>
+        <h1>{{ 'review.index.title'|trans }}</h1>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{{ path('app_companies') }}" class="btn btn-outline-secondary">{{ 'nav.companies'|trans }}</a>
+        <a href="{{ path('app_review_new') }}" class="btn btn-primary">{{ 'nav.new_review'|trans }}</a>
+    </div>
+</header>
+
+{% if reviews is empty %}
+    {% include 'components/_empty_state.html.twig' with {
+        message: 'review.empty.message'|trans,
+        cta_text: 'review.empty.cta'|trans,
+        cta_href: path('app_review_new')
+    } only %}
+{% else %}
+    <div class="review-list">
+        {% for review in reviews %}
+            {% include 'components/_review_card.html.twig' with {review: review} only %}
+        {% endfor %}
+    </div>
+
+    {% include 'components/_pagination.html.twig' with {pagination: pagination} only %}
+{% endif %}
+{% endblock %}

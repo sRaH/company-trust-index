@@ -18,3 +18,23 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+###> pentatrion/vite-bundle ###
+/node_modules/
+/public/build/
+###< pentatrion/vite-bundle ###
+
+###> cypress ###
+/cypress/screenshots/
+/cypress/videos/
+/cypress/downloads/
+###< cypress ###
+
+###> friendsofphp/php-cs-fixer ###
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+###< friendsofphp/php-cs-fixer ###
+
+
+/.test-server.pid
+.idea

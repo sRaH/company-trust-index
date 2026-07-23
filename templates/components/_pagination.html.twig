@@ -1,0 +1,48 @@
+{# Reusable, windowed pagination.
+   Variables:
+     - pagination: { page: int, lastPage: int, total?: int }
+     - route  (string, optional; defaults to the current route)
+     - params (array,  optional; defaults to the current route parameters) #}
+{% set route = route|default(app.current_route) %}
+{% set params = params|default(app.current_route_parameters) %}
+{% set page = pagination.page %}
+{% set lastPage = pagination.lastPage %}
+
+{% if lastPage > 1 and route %}
+<nav class="cti-pagination" aria-label="{{ 'pagination.aria'|trans }}">
+    <ul class="pagination">
+        <li class="page-item {{ page <= 1 ? 'disabled' }}">
+            {% if page > 1 %}
+                <a class="page-link" rel="prev" href="{{ path(route, params|merge({page: page - 1})) }}" aria-label="{{ 'pagination.prev'|trans }}">‹</a>
+            {% else %}
+                <span class="page-link" aria-hidden="true">‹</span>
+            {% endif %}
+        </li>
+
+        {% for p in 1..lastPage %}
+            {% if p == 1 or p == lastPage or (p >= page - 1 and p <= page + 1) %}
+                <li class="page-item {{ p == page ? 'active' }}">
+                    {% if p == page %}
+                        <span class="page-link" aria-current="page">{{ p }}</span>
+                    {% else %}
+                        <a class="page-link" href="{{ path(route, params|merge({page: p})) }}">{{ p }}</a>
+                    {% endif %}
+                </li>
+            {% elseif p == 2 or p == lastPage - 1 %}
+                <li class="page-item disabled" aria-hidden="true"><span class="page-link">…</span></li>
+            {% endif %}
+        {% endfor %}
+
+        <li class="page-item {{ page >= lastPage ? 'disabled' }}">
+            {% if page < lastPage %}
+                <a class="page-link" rel="next" href="{{ path(route, params|merge({page: page + 1})) }}" aria-label="{{ 'pagination.next'|trans }}">›</a>
+            {% else %}
+                <span class="page-link" aria-hidden="true">›</span>
+            {% endif %}
+        </li>
+    </ul>
+    {% if pagination.total is defined %}
+        <p class="cti-pagination__count">{{ 'pagination.count'|trans({'%total%': pagination.total}) }}</p>
+    {% endif %}
+</nav>
+{% endif %}

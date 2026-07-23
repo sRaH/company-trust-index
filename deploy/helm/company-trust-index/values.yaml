@@ -1,0 +1,93 @@
+replicaCount: 1
+
+image:
+    repository: ghcr.io/srah/company-trust-index
+    pullPolicy: Always
+    tag: amd64
+
+imagePullSecrets:
+    - name: ghcr-pull
+
+nameOverride: ""
+fullnameOverride: ""
+
+podSecurityContext:
+    seccompProfile:
+        type: RuntimeDefault
+
+securityContext: {}
+
+service:
+    type: ClusterIP
+    port: 80
+    targetPort: http
+
+ingress:
+    enabled: true
+    className: traefik
+    annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+    hosts:
+        - host: company-trust-index.srah.eu
+          paths:
+              - path: /
+                pathType: Prefix
+    tls: []
+
+mariadb:
+    enabled: true
+    image: docker-registry1.mariadb.com/library/mariadb:11.8.2
+    database: app
+    username: app
+    storage:
+        size: 10Gi
+    resources:
+        requests:
+            cpu: 100m
+            memory: 512Mi
+        limits:
+            cpu: 500m
+            memory: 1Gi
+
+migrate:
+    enabled: true
+
+resources:
+    requests:
+        cpu: 100m
+        memory: 128Mi
+    limits:
+        cpu: 500m
+        memory: 512Mi
+
+livenessProbe:
+    httpGet:
+        path: /
+        port: http
+    initialDelaySeconds: 20
+    periodSeconds: 30
+    timeoutSeconds: 5
+    failureThreshold: 3
+
+readinessProbe:
+    httpGet:
+        path: /
+        port: http
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+
+env:
+    APP_ENV: prod
+    APP_DEBUG: "0"
+
+secret:
+    create: true
+    name: ""
+    appSecret: ""
+    databaseUrl: ""
+    mariadbPassword: ""
+    mariadbPasswordKey: MARIADB_PASSWORD
+
+existingSecret: ""

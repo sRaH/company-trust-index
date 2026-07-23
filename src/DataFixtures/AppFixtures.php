@@ -38,7 +38,7 @@ final class AppFixtures extends Fixture
             ['TestCorp', 5, 'Kiváló ügyfélszolgálat, gyors válaszok.', 'leo@example.com', 12],
             ['Example Ltd', 3, 'Elfogadható, de van hova fejlődni.', 'mallory@example.com', 13],
             ['Acme Kft', 4, 'Barátságos személyzet, ajánlom.', 'nina@example.com', 14],
-            ['Globex', 5, 'Legjobb tapasztalatom idén, szuper csapat.', 'oscar@example.com', 15],
+            ['Globex', 5, str_repeat('Ez egy szándékosan hosszú bemutató értékelés, amely részletesen bemutatja a szolgáltatás minőségét, a kommunikáció gördülékenységét, a szállítás pontosságát és az ügyfélszolgálat segítőkészségét. Az egész folyamat során gyorsan kaptam választ a kérdéseimre, minden ígéret teljesült, és a kisebb problémákat is egyszerűen sikerült megoldani. A részletes tapasztalat alapján ezt a céget jó szívvel ajánlom másoknak is. ', 4), 'oscar@example.com', 15],
         ];
 
         $reviewObjects = [];

@@ -82,6 +82,79 @@ final class ReviewControllerTest extends WebTestCase
         $this->assertSelectorExists('.page-item.active .page-link');
     }
 
+    public function testReviewCardsExposeStimulusExpandControllerWithAriaWiring(): void
+    {
+        $crawler = $this->client->request('GET', '/');
+
+        $this->assertResponseIsSuccessful();
+        // Every review card is wired to the expand controller so the full text
+        // is preserved and the controller can reveal the toggle per card.
+        $this->assertGreaterThan(0, $crawler->filter('.review-card[data-controller="review-expand"]')->count());
+        // The text region carries a unique id the toggle points at via aria-controls.
+        $firstCard = $crawler->filter('.review-card[data-controller="review-expand"]')->first();
+        $textId = $firstCard->filter('.review-card__text')->attr('id');
+        $this->assertNotNull($textId);
+        $this->assertStringStartsWith('review-text-', $textId);
+        $toggle = $firstCard->filter('.review-card__expand');
+        $this->assertSame('false', $toggle->attr('aria-expanded'));
+        $this->assertSame($textId, $toggle->attr('aria-controls'));
+        $this->assertSame('Bővebben', trim($toggle->text(null, false)));
+        // The toggle starts hidden server-side (boolean attribute); the controller
+        // reveals it when the clamped preview actually overflows.
+        $this->assertNotNull($toggle->attr('hidden'));
+    }
+
+    public function testLongReviewRendersFullTextWithoutServerSideTruncation(): void
+    {
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+
+        $company = new Company();
+        $company->setName('LongTextCorp');
+        $em->persist($company);
+
+        // Well over the previous 200-char truncation limit (entity allows up to 2000).
+        $longText = str_repeat('Részletes visszajelzés a szolgáltatásról és a kommunikációról. ', 7);
+        $review = new Review();
+        $review->setCompany($company);
+        $review->setRating(4);
+        $review->setReviewText($longText);
+        $review->setAuthorEmail('long@example.com');
+        $em->persist($review);
+        $em->flush();
+
+        $crawler = $this->client->request('GET', '/');
+
+        $this->assertResponseIsSuccessful();
+
+        $card = $crawler->filter('.review-card')->reduce(
+            static fn (\Symfony\Component\DomCrawler\Crawler $node): bool => str_contains($node->text(null, false), 'LongTextCorp'),
+        )->first();
+
+        // The full text is present in the DOM — no ellipsis truncation.
+        $renderedText = $card->filter('.review-card__text')->text(null, false);
+        $this->assertStringContainsString($longText, $renderedText);
+        $this->assertStringNotContainsString('…', $renderedText);
+
+        // The toggle's aria-controls resolves to this review's text region.
+        $expectedId = 'review-text-'.$review->getId();
+        $this->assertSame(1, $card->filter('#'.$expectedId)->count());
+        $this->assertSame($expectedId, $card->filter('.review-card__expand')->attr('aria-controls'));
+    }
+
+    public function testShortReviewRendersFullTextWithNoTruncation(): void
+    {
+        $crawler = $this->client->request('GET', '/');
+
+        $this->assertResponseIsSuccessful();
+        // The newest seeded review sorts first on the homepage; its short text
+        // is shown whole (not cut by the old u.truncate()).
+        $this->assertSelectorTextContains('.review-card__text', 'Korrekt kiszolgálás.');
+        // No review text carries the server-side ellipsis any more.
+        foreach ($crawler->filter('.review-card__text') as $node) {
+            $this->assertStringNotContainsString('…', $node->textContent);
+        }
+    }
+
     public function testPaginationSecondPageShowsRemainingReviews(): void
     {
         $crawler = $this->client->request('GET', '/?page=2');

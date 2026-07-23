@@ -250,6 +250,41 @@
     line-height: 1.6;
 }
 
+.review-card:not(.is-expanded) .review-card__text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    overflow: hidden;
+}
+
+.review-card__expand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.55rem;
+    padding: 0.15rem 0;
+    border: 0;
+    background: transparent;
+    color: $cti-primary-700;
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1.4;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.review-card__expand:hover {
+    color: $cti-primary;
+    text-decoration: underline;
+}
+
+.review-card__expand:focus-visible {
+    outline: none;
+    box-shadow: $cti-ring-primary;
+    border-radius: $cti-radius-sm;
+}
+
 // -----------------------------------------------------------------------------
 // Empty state (used by _empty_state.html.twig)
 // -----------------------------------------------------------------------------
@@ -402,6 +437,7 @@
 @media (prefers-reduced-motion: reduce) {
     .cti-flashes .alert { animation: none; }
     .review-card { transition: none; }
+    .review-card__expand { transition: none; }
 }
 
 // -----------------------------------------------------------------------------

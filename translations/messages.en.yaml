@@ -44,6 +44,9 @@ review:
     empty:
         message: "No reviews yet. Be the first to share your experience!"
         cta: "Write the first one"
+    card:
+        expand: "Read more"
+        collapse: "Show less"
 
 form:
     review:

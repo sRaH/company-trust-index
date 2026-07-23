@@ -1,4 +1,5 @@
-<article class="review-card">
+{% set text_id = 'review-text-' ~ review.id %}
+<article class="review-card" data-controller="review-expand">
     <div class="review-card__head">
         <div>
             <h3 class="review-card__title">
@@ -10,5 +11,16 @@
             {{ review.createdAt|date('Y.m.d H:i') }}
         </time>
     </div>
-    <p class="review-card__text">{{ review.reviewText|u.truncate(200, '…') }}</p>
+    {# Full text is always rendered; the controller reveals the toggle only
+       when the CSS-clamped preview overflows, leaving short cards clean. #}
+    <p id="{{ text_id }}" class="review-card__text" data-review-expand-target="text">{{ review.reviewText }}</p>
+    <button type="button"
+            class="review-card__expand"
+            data-review-expand-target="toggle"
+            data-action="click->review-expand#toggle"
+            aria-expanded="false"
+            aria-controls="{{ text_id }}"
+            data-expand-label="{{ 'review.card.expand'|trans }}"
+            data-collapse-label="{{ 'review.card.collapse'|trans }}"
+            hidden>{{ 'review.card.expand'|trans }}</button>
 </article>
